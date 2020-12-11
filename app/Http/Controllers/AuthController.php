@@ -1341,4 +1341,21 @@ class AuthController extends Controller
 
 
 
+        #<---=== Controller Student Manage ===----->
+        public function genarate($exam,$id)
+        {
+            #<---=== Get Exam details using parameter $exam ===----->
+            $exam= Exam::where('id',$exam)->get();
+            #<---=== Join Reult And Student Table by user_id and get data according to result id ===----->
+            $info = Result::select(['results.yes_ans','results.no_ans','students.*'])->join('students','results.user_id','=','students.sid')->where('results.id',$id)->get();
+
+            $pdf = PDF::loadView('student.show_result', compact('exam','info'));
+            return $pdf->stream('invoice.pdf');
+
+
+        }
+
+
+    
+
 }

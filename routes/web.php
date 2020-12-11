@@ -196,6 +196,8 @@ Route::post('/reset/password/confirm', [AuthController::class,'reset_password_co
 
 
 
+#<---=== Show Reset Password Form ===----->
+Route::get('/markshet/download/{exam}/{id}', [AuthController::class,'genarate']);
 
 
 
