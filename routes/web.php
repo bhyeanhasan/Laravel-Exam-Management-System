@@ -112,6 +112,15 @@ Route::post('/exam/status', [AuthController::class,'exam_status']);
 #<---===  Teacher View Question ===----->
 Route::get('/view_question/{id}', [AuthController::class,'view_queston']);
 
+#<---===  Teacher View Question ===----->
+Route::get('/questions_details/{id}', [AuthController::class,'questions_details']);
+
+#<---===  Fetch Question details for edit question modal view ===----->
+Route::get('/question_edit/{id}', [AuthController::class,'question_edit']);
+
+#<---===  Update Question ===----->
+Route::post('/question_update', [AuthController::class,'question_update']);
+
 #<---=== Teacher Question Delete ===----->
 Route::get('/teacher/question/delete/{id}', [AuthController::class,'questions_deletes']);
 
@@ -197,4 +206,6 @@ Route::post('/reset/password/confirm', [AuthController::class,'reset_password_co
 
 
 
+
+Route::get('/allquestion/delete', [AuthController::class, 'deleteAll']);
 

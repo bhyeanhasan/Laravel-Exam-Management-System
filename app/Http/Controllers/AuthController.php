@@ -842,7 +842,7 @@ class AuthController extends Controller
                 }
             }
     }
-    #<---===  Teacher View Question ===----->
+    #<---===  Teacher View Question View===----->
     public function view_queston($id)
     {
         #<---=== check Teacher Login or not ===----->
@@ -850,20 +850,68 @@ class AuthController extends Controller
             return view('404');
             die();
         }else{
-            $exams_id = $id;
             #<---=== Find Question using by examId ===----->
             $questions = Question::where('exam_id',$id)->get();
             #<---=== Pass Question And Exam Id ===----->
-            return view('teacher.view_question',compact('questions','exams_id'));
+            return view('teacher.view_question',compact('questions','id'));
         }
     }
-    #<---=== Teacher Question Delete ===----->
+    #<---=== Show Question Details ===----->
+    public function questions_details($id)
+    {
+        #<---=== check Teacher Login or not ===----->
+        if(!Session::get('teacher_session')){
+            return view('404');
+            die();
+        }else{
+            #<---=== Find Question using by examId ===----->
+            $data = Question::where('exam_id',$id)->get();
+            return response()->json($data);
+        }
+    }    
+    #<---===  Fetch Question details for edit question modal view ===----->
+    public function question_edit($id)
+    {
+        $data = Question::where('id',$id)->get();
+        return response()->json(['data'=>$data]);
+    }
+    #<---===  Update Question function===----->
+    public function question_update(Request $request)
+    { 
+        #<---======Check Alredy Exm Avilable Or Not=======----->
+        //$data = Question::where('question',$request->question)->value('exam_id');
+        //if($data){
+            //return response()->json(['error'=>'This Question Already Exists']);
+        //}else{
+        #<---===  Update Question ===----->
+        $data = Question::findOrFail($request->question_id)->update([
+            'question'=>$request->question,
+            'option1'=>$request->question_option1,
+            'option2'=>$request->question_option2,
+            'option3'=>$request->question_option3,
+            'option4'=>$request->question_option4,
+            'ans'=>$request->question_right_option,
+        ]);
+        return response()->json(['success'=>'Question Updated']);
+        //}
+    }
+    #<---===Question Delete  function===----->
     public function questions_deletes($id)
     {
         #<---=== Find Question Id,then delete,finally pass success message===----->
         $category = Question::findOrFail($id);
         $category->delete();
         return response()->json(['success'=>'Delete rtecord Successfully']);
+    }
+    //<!------===== All Question Delete  function======--------->
+    public function deleteAll(Request $request)
+    {
+      $ids = $request->ids;
+      
+      foreach($ids as $id){//<!------=========Delete All Comming data one by one========--------->
+        Question::where('id',$id)->delete();
+      }
+      return response()->json(['success'=>'Delete All Record Successfully']); 
     }
     #<---=== Teacher Logout ===----->
     public function teacher_logout(Request $request)
@@ -1290,6 +1338,7 @@ class AuthController extends Controller
            }
         }
     }
+
 
 
 }
