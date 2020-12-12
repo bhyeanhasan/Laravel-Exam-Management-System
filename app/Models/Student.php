@@ -31,6 +31,8 @@ class Student extends Model
     {
      return strtoupper($value);
     }
+
+
     #<---=== Password Hash Mutators ===----->
     public function setPasswordAttribute($value){
       $this->attributes['password'] = bcrypt($value);

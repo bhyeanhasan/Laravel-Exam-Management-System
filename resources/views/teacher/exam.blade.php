@@ -8,15 +8,19 @@
      <div class="mt-5"></div>
      <div class="card">
       <div class="card-header text-center bg-dark">
-       <div class="row">
-        <div class="col-sm-6 text-cener">
-         <strong class="text-danger h3">Exam Details</strong>
+      <div class="row">
+        <div class="col-sm-4 text-left">
+        <a href="{{url('/teacher/dashboard')}}" class="btn btn-sm btn-light">Back</a>
         </div>
-        <div class="col-sm-6 text-right">
-         <button class="btn btn-sm btn-danger "data-toggle="modal" data-target="#exampleModalCenter">Add Exam</button>
+        <div class="col-sm-4 text-cener">
+        <strong class="text-danger h3">Exam Details</strong>
         </div>
-       </div>
+        <div class="col-sm-4 text-right">
+          <button class="btn btn-sm btn-danger "data-toggle="modal" data-target="#exampleModalCenter"><i class='fas fa-plus'></i>&nbsp; Exam</button>
+        </div>
       </div>
+      </div>
+
       <div class="card-body">
         <div class="error"></div>
         <div class="success"></div>
@@ -66,9 +70,9 @@
             @endif
           </td>
           <td>
-           <button class="btn btn-sm btn-danger" onclick="examdeletes({{$exam->id}})">Delete</button>
-           <button class="btn btn-sm btn-warning"data-toggle="modal" data-target="#EditExamIbformation"onclick="edit_exam_details({{$exam->id}})">Edit</button>
-            <a href="{{url('/view_question/'.$exam->id)}}"class="btn btn-sm btn-info" >View</a>
+           <button class="btn btn-sm btn-danger" onclick="examdeletes({{$exam->id}})"><i class='fas fa-trash'></i></button>
+           <button class="btn btn-sm btn-warning"data-toggle="modal" data-target="#EditExamIbformation"onclick="edit_exam_details({{$exam->id}})"><i class='fas fa-edit'></i></button>
+            <a href="{{url('/view_question/'.$exam->id)}}"class="btn btn-sm btn-info" ><i class='fas fa-eye'></i></a>
           </td>
          </tr>
          @endforeach

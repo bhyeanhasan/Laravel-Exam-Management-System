@@ -36,7 +36,7 @@
   
     <div class="card" style="width: 600px;">
       <div class="card-header text-center bg-dark">
-      <strong class="h2">Reset Your Password,{{$who}}</strong>
+      <strong class="h2">Reset Your Password,<span style="text-transform: capitalize;">{{$who}}</span></strong>
       </div>
       <div class="card-body">
           <strong><div class='alert bg-danger alert-dismissible fade show text-center' role='alert' style="display: none;" id="error"></div></strong>

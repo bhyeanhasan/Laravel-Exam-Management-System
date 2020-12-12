@@ -156,8 +156,14 @@
 																													<tr>
 																														<td style="padding:18px 30px 18px 30px; line-height:22px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
 																															<div>
-																																<div style="font-family: inherit; text-align: center"><span style="color: #000000; font-size: 18px; font-family: arial,helvetica,sans-serif"> Admin Change Your Acoount Status</span><span style="font-size: 18px">.</span>
+																																@if ($details['status'] == '1' )
+																																<div style="font-family: inherit; text-align: center"><span style="color: #000000; font-size: 18px; font-family: arial,helvetica,sans-serif"> Admin Change Your Acoount Status <strong class="h4" style="color: rgb(243, 3, 3);">InActive</strong></span><span style="font-size: 18px">.</span>
 																																</div>
+																																@else
+																																<div style="font-family: inherit; text-align: center"><span style="color: #000000; font-size: 18px; font-family: arial,helvetica,sans-serif"> Admin Change Your Acoount Status  <strong class="h4" style="color: rgb(0, 238, 59);">Active</strong></span><span style="font-size: 18px">.</span>
+																																</div>
+
+																																@endif
 																																<div style="font-family: inherit; text-align: center"><span style="color: #ffbe00; font-size: 18px"><strong>Thank you!&nbsp;</strong></span>
 																																</div>
 																																<div></div>

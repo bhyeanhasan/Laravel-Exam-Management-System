@@ -209,7 +209,7 @@ class AuthController extends Controller
             #<---======Check Alredy Request Data Avilable Or Not=======----->
             $db_check_id = Admin::where('aid',$request->sin_id)->value('aid');
             $db_check_email = Admin::where('email',$request->sin_email)->value('email');
-            $db_check_pass = Admin::where('password',$request->sin_pass)->value('password');
+            $db_check_pass = Admin::where('aid',$request->sin_id)->value('password');
 
 
             #<---===If request id is not exist then===----->
@@ -220,9 +220,9 @@ class AuthController extends Controller
             else if(!$db_check_email){
                 return response()->json(['error'=>'Your Email Is Not Avilable']);
             }
-            #<---===If request password is not exist then===----->
-            else if(!$db_check_pass){
-                return response()->json(['error'=>'Your Password Is Not Avilable']);
+            #<---===If request pasword Hash is not equal to existing Hash Password then===----->
+            else if (!Hash::check($request->sin_pass, $db_check_pass)) {
+                return response()->json(['error'=>'Enter Valid Password']);
             }
             #<---===If request all data exist then===----->
             else{
@@ -530,6 +530,7 @@ class AuthController extends Controller
         #<---=== Pass Two value inside $details.Whose account status is change and warning message For send warning mail purpose ===----->
         $details = [
             'who' =>  $request->who,
+            'status' =>  $request->status,
             'warning' => " Admin Change Your Account Status"
         ];
         #<---=== Check Teacher status change or not ===----->
@@ -1295,6 +1296,7 @@ class AuthController extends Controller
         }
         else if($who == 'controller')
         {
+            $who = 'Controller';
             #<---=== Get vkey who want to reset password ===----->
            $get = Controller::where('email',$email)->where('vkey',$vkey)->value('vkey');
            if($get)
@@ -1307,7 +1309,37 @@ class AuthController extends Controller
            }
            return view('emails.reset_password_form',compact('who','email'));
         }
+        else if($who == 'student')
+        {
+            $who = 'Student';
+            #<---=== Get vkey who want to reset password ===----->
+           $get = Student::where('email',$email)->where('vkey',$vkey)->value('vkey');
+           if($get)
+           {
+               #<---=== Update Some Information ===-----> 
+               $data = Student::where('email',$email)->update([
+                 'vkey' => "",
+                 'verify' => "1",
+              ]);
+           }
+           return view('emails.reset_password_form',compact('who','email'));
+        }else{
+            $who = 'Admin';
+            #<---=== Get vkey who want to reset password ===----->
+           $get = Admin::where('email',$email)->where('vkey',$vkey)->value('vkey');
+           if($get)
+           {
+               #<---=== Update Some Information ===-----> 
+               $data = Admin::where('email',$email)->update([
+                 'vkey' => "",
+                 'verify' => "1",
+              ]);
+           }
+           return view('emails.reset_password_form',compact('who','email'));
+
+        }
     }
+
     #<---=== Reset Password Update ===----->
     public function reset_password_confirm(Request $request)
     {
@@ -1319,41 +1351,68 @@ class AuthController extends Controller
            if(!$get)
            {
             $ok = Teacher::where('email',$request->email)->update([
-                 'password' => $request->pass,
+                 'password' => Hash::make($request->pass),
             ]);
             return response()->json(['success'=>'Now You Can Login Your Account']);
            }
         }
         #<---=== Check who send request reset password form===----->
-        else if($request->who == 'controller')
+        else if($request->who == 'Controller')
         {
             #<---=== Get vkey who want to reset password ===----->
            $get = Controller::where('email',$request->email)->value('vkey');
            if(!$get)
            {
-            $ok = Controller::where('email',$request->email)->update([
-                 'password' => $request->pass,
+            Controller::where('email',$request->email)->update([
+                 'password' => Hash::make($request->pass),
             ]);
             return response()->json(['success'=>'Now You Can Login Your Account']);
            }
+        }
+        #<---=== Check who send request reset password form===----->
+        else if($request->who == 'student')
+        {
+            #<---=== Get vkey who want to reset password ===----->
+           $get = Student::where('email',$request->email)->value('vkey');
+           if(!$get)
+           {
+            $ok = Student::where('email',$request->email)->update([
+                 'password' => Hash::make($request->pass),
+            ]);
+            return response()->json(['success'=>'Now You Can Login Your Account']);
+           }
+        }else{
+            #<---=== Get vkey who want to reset password ===----->
+           $get = Admin::where('email',$request->email)->value('vkey');
+           if(!$get)
+           {
+            $ok = Admin::where('email',$request->email)->update([
+                 'password' => Hash::make($request->pass),
+            ]);
+            return response()->json(['success'=>'Now You Can Login Your Account']);
+           }
+
         }
     }
 
 
 
-        #<---=== Controller Student Manage ===----->
-        public function genarate($exam,$id)
-        {
-            #<---=== Get Exam details using parameter $exam ===----->
-            $exam= Exam::where('id',$exam)->get();
-            #<---=== Join Reult And Student Table by user_id and get data according to result id ===----->
-            $info = Result::select(['results.yes_ans','results.no_ans','students.*'])->join('students','results.user_id','=','students.sid')->where('results.id',$id)->get();
-
-            $pdf = PDF::loadView('student.show_result', compact('exam','info'));
-            return $pdf->stream('invoice.pdf');
 
 
-        }
+
+    #<---=== Controller Student Manage ===----->
+    public function genarate($exam,$id)
+    {
+        #<---=== Get Exam details using parameter $exam ===----->
+        $exam= Exam::where('id',$exam)->get();
+        #<---=== Join Reult And Student Table by user_id and get data according to result id ===----->
+        $info = Result::select(['results.yes_ans','results.no_ans','students.*'])->join('students','results.user_id','=','students.sid')->where('results.id',$id)->get();
+
+        $pdf = PDF::loadView('student.show_result', compact('exam','info'));
+        return $pdf->stream('invoice.pdf');
+
+
+    }
 
 
     

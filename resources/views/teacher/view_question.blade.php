@@ -11,7 +11,7 @@
         <div class="card-header text-center bg-dark">
         <div class="row">
           <div class="col-sm-4 text-left">
-          <a href="{{url('/teacher/exam')}}" class="btn btn-sm btn-danger">Back</a>
+          <a href="{{url('/teacher/exam')}}" class="btn btn-sm btn-light">Back</a>
           </div>
           <div class="col-sm-4 text-cener">
           <strong class="text-danger h3">Question Details</strong>
@@ -30,7 +30,7 @@
             <tr class="text-center">
               <th class="text-left">
                 <input  type='checkbox' id='chkall' /> 
-                <a href="" class="btn btn-light btn-sm" id="deleteAll"><i class="fas fa-edit"></i></a>
+                <a href="" class="btn btn-danger btn-sm" id="deleteAll"><i class='fas fa-trash'></i></a>
               </th>
               <th>No</th>
               <th>Question</th>
@@ -240,7 +240,7 @@
             data = data + "<td>"+value.ans+"</td>"
 
           data = data + "<td>"
-          data =data + "<button  class='btn btn-warning btn-sm mx-1'data-toggle='modal' data-target='#Edit_Exam_Question_Modal' onclick='edit_question("+value.id+")'>Edit</button><button  class='btn btn-danger btn-sm mx-1'onclick='questions_deletes("+value.id+")'>Delete</button>"
+          data =data + "<button  class='btn btn-warning btn-sm mx-1'data-toggle='modal' data-target='#Edit_Exam_Question_Modal' onclick='edit_question("+value.id+")'><i class='fas fa-edit'></i></button><button  class='btn btn-danger btn-sm mx-1'onclick='questions_deletes("+value.id+")'><i class='fas fa-trash'></i></button>"
           data = data + "</td>" 
 
           data = data + "</tr>"
@@ -442,7 +442,7 @@
   //<!------=========Send Request for Delete All Checkbox data========--------->
   $("#deleteAll").click(function(e){
       e.preventDefault();
-      //<!------========= Create array for store selected item ========--------->
+      //<!------========= Create array for store, selected item ========--------->
       var allids = [];
       //<!------========= Push every selected question vaue inside array ========--------->
       $("input:checkbox[name=ids]:checked").each(function(){
