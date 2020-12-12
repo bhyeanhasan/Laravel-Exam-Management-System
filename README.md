@@ -250,7 +250,7 @@ This Command Create `7` `tables` inside database.
 
 
 
-><br><br><br>Thats All About My Simple Exam Management Project in 2020 on `LARAVEL`.......🤝✔🤝<br><br><br>
+><br><br><br>Thats All About My Simple Exam Management Project in 2020 on `LARAVEL`.......🤝✔✔🤝<br><br><br>
 
 
 
